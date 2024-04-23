@@ -10,6 +10,10 @@ void loop() {
     return; // Exit the loop and end the program
   }
 
+  while (Serial.available()) {
+    Serial.read();
+  }
+
   char choice = getUserChoice();
 
   switch (choice) {
@@ -31,6 +35,9 @@ void loop() {
   }
 
   if (shouldRun) {
+      while (Serial.available()) {
+      Serial.read();
+    }
     char tryAgain;
     do {
       Serial.println("Do you want to try again (y/n)?");
@@ -41,6 +48,7 @@ void loop() {
         shouldRun = false; // Set flag to false to exit the loop
         break;
       }
+
     } while (tryAgain != 'y' && tryAgain != 'Y');
 
     if (shouldRun) {
@@ -65,6 +73,7 @@ char getUserChoice() {
 }
 
 void calculateCircleArea() {
+
   Serial.println("*** Computing for the area of the circle ***");
   Serial.println("Enter radius of the circle: ");
   float radius = getPositiveFloatInput();
@@ -76,6 +85,11 @@ void calculateCircleArea() {
 }
 
 void calculateRectangleArea() {
+  // Clear serial buffer
+  while (Serial.available()) {
+    Serial.read();
+  }
+
   Serial.println("*** Computing for the area of the rectangle ***");
   Serial.println("Enter length of the rectangle: ");
   float length = getPositiveFloatInput();
@@ -91,6 +105,11 @@ void calculateRectangleArea() {
 }
 
 void calculateTriangleArea() {
+  // Clear serial buffer
+  while (Serial.available()) {
+    Serial.read();
+  }
+
   Serial.println("*** Computing for the area of the triangle ***");
   Serial.println("Enter length of the triangle's base: ");
   float base = getPositiveFloatInput();
@@ -107,6 +126,11 @@ void calculateTriangleArea() {
 
 float getPositiveFloatInput() {
   float input;
+
+  // Clear serial buffer
+  while (Serial.available()) {
+    Serial.read();
+  }
 
   while (true) {
     while (!Serial.available()); // Wait for user input
