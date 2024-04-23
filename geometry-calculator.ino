@@ -1,8 +1,8 @@
-bool shouldRun = true; // Flag to control program execution
+bool shouldRun = true; //This decides if the code will still run
 
 void setup() {
-  Serial.begin(9600);
-  displayMenu(); // Display the menu once when the program starts
+  Serial.begin(9600); //This is the delay in which it begins
+  geometryCalcuMenu(); // Display the Geometry Calculator Choices the 1-4
 }
 
 void loop() {
@@ -14,21 +14,21 @@ void loop() {
     Serial.read();
   }
 
-  char choice = getUserChoice();
+  char choice = userPrompt();
 
   switch (choice) {
     case '1':
-      calculateCircleArea();
+      circleCalcu();
       break;
     case '2':
-      calculateRectangleArea();
+      rectangleCalcu();
       break;
     case '3':
-      calculateTriangleArea();
+      triangleCalcu();
       break;
     case '4':
       Serial.println("Exiting program.");
-      shouldRun = false; // Set flag to false to exit the loop
+      shouldRun = false;
       break;
     default:
       Serial.println("Invalid choice. Please enter a number from 1 to 4.");
@@ -45,20 +45,19 @@ void loop() {
       tryAgain = Serial.read();
       if (tryAgain == 'n' || tryAgain == 'N') {
         Serial.println("Exiting program.");
-        shouldRun = false; // Set flag to false to exit the loop
+        shouldRun = false; 
         break;
       }
 
     } while (tryAgain != 'y' && tryAgain != 'Y');
 
     if (shouldRun) {
-      // Display the menu again if the user wants to try again
-      displayMenu();
+      geometryCalcuMenu();
     }
   }
 }
 
-void displayMenu() {
+void geometryCalcuMenu() {
   Serial.println("<<<<< Geometry Calculator >>>>>");
   Serial.println("1. Calculate the Area of a Circle");
   Serial.println("2. Calculate the Area of a Rectangle");
@@ -67,16 +66,16 @@ void displayMenu() {
   Serial.println("Enter your choice (1-4):");
 }
 
-char getUserChoice() {
-  while (!Serial.available()); // Wait for user input
+char userPrompt() {
+  while (!Serial.available()); 
   return Serial.read();
 }
 
-void calculateCircleArea() {
+void circleCalcu() {
 
   Serial.println("*** Computing for the area of the circle ***");
   Serial.println("Enter radius of the circle: ");
-  float radius = getPositiveFloatInput();
+  float radius = positiveValidation();
   float area = 3.14159 * radius * radius;
   Serial.print("The area of the circle with a radius of ");
   Serial.print(radius);
@@ -84,7 +83,7 @@ void calculateCircleArea() {
   Serial.println(area);
 }
 
-void calculateRectangleArea() {
+void rectangleCalcu() {
   // Clear serial buffer
   while (Serial.available()) {
     Serial.read();
@@ -92,9 +91,9 @@ void calculateRectangleArea() {
 
   Serial.println("*** Computing for the area of the rectangle ***");
   Serial.println("Enter length of the rectangle: ");
-  float length = getPositiveFloatInput();
+  float length = positiveValidation();
   Serial.println("Enter width of the rectangle: ");
-  float width = getPositiveFloatInput();
+  float width = positiveValidation();
   float area = length * width;
   Serial.print("The area of the rectangle with length ");
   Serial.print(length);
@@ -104,7 +103,7 @@ void calculateRectangleArea() {
   Serial.println(area);
 }
 
-void calculateTriangleArea() {
+void triangleCalcu() {
   // Clear serial buffer
   while (Serial.available()) {
     Serial.read();
@@ -112,9 +111,9 @@ void calculateTriangleArea() {
 
   Serial.println("*** Computing for the area of the triangle ***");
   Serial.println("Enter length of the triangle's base: ");
-  float base = getPositiveFloatInput();
+  float base = positiveValidation();
   Serial.println("Enter height of the triangle: ");
-  float height = getPositiveFloatInput();
+  float height = positiveValidation();
   float area = 0.5 * base * height;
   Serial.print("The area of the triangle with base ");
   Serial.print(base);
@@ -124,7 +123,7 @@ void calculateTriangleArea() {
   Serial.println(area);
 }
 
-float getPositiveFloatInput() {
+float positiveValidation() {
   float input;
 
   // Clear serial buffer
