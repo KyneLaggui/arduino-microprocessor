@@ -104,28 +104,44 @@
 #define NOTE_DS8 4978
 #define REST      0
 
-int tempo = 114;
+int tempoNGYU = 114;
+int tempoFE = 80;
+
 
 int melodyNGYU[] = {
-  REST,8, NOTE_E5,8, NOTE_FS5,8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
-  NOTE_FS5,-8, NOTE_FS5,-8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
+    REST,8, NOTE_E5,8, NOTE_FS5,8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
+    NOTE_FS5,-8, NOTE_FS5,-8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
 
-  NOTE_E5,-8, NOTE_E5,-8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,-8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16, //18
-  NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,8, NOTE_A4,8, NOTE_A4,8, 
-  NOTE_E5,4, NOTE_D5,2, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
-  NOTE_FS5,-8, NOTE_FS5,-8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
-  NOTE_A5,4, NOTE_CS5,8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
+    NOTE_E5,-8, NOTE_E5,-8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,-8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16, //18
+    NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,8, NOTE_A4,8, NOTE_A4,8, 
+    NOTE_E5,4, NOTE_D5,2, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
+    NOTE_FS5,-8, NOTE_FS5,-8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
+    NOTE_A5,4, NOTE_CS5,8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
 
-  NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,4, NOTE_A4,8,  //23
-  NOTE_E5,4, NOTE_D5,2, REST,4,
+    NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,4, NOTE_A4,8,  //23
+    NOTE_E5,4, NOTE_D5,2, REST,4,
+};
+
+int melodyFurElise[] = {
+    NOTE_E5, 16, NOTE_DS5, 16, 
+    NOTE_E5, 16, NOTE_DS5, 16, NOTE_E5, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_C5, 16,
+    NOTE_A4, -8, NOTE_C4, 16, NOTE_E4, 16, NOTE_A4, 16,
+    NOTE_B4, -8, NOTE_E4, 16, NOTE_GS4, 16, NOTE_B4, 16,
+    NOTE_C5, 8,  REST, 16, NOTE_E4, 16, NOTE_E5, 16,  NOTE_DS5, 16,
+    
+    NOTE_E5, 16, NOTE_DS5, 16, NOTE_E5, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_C5, 16,//6
+    NOTE_A4, -8, NOTE_C4, 16, NOTE_E4, 16, NOTE_A4, 16, 
+    NOTE_B4, -8, NOTE_E4, 16, NOTE_C5, 16, NOTE_B4, 16, 
+    NOTE_A4 , 4, REST, 8,
 };
 
 int notesNGYU = sizeof(melodyNGYU) / sizeof(melodyNGYU[0]) / 2;
+int notesFE = sizeof(melodyFurElise) / sizeof(melodyFurElise[0]) / 2;
 
+int wholeNoteNGYU = (60000 * 4) / tempoNGYU;
+int wholeNoteFE = (60000 * 4) / tempoFE;
 
-int wholeNoteNGYU = (60000 * 4) / tempo;
-
-int dividerNGYU = 0, noteDuration = 0;
+int divider = 0, noteDuration = 0;
 
 
 
@@ -179,7 +195,7 @@ void playSong(int songNumber) {
       playNeverGonnaGiveYouUp();
       break;
     case 2:
-      playBaaBaaBlackSheep();
+      playFurElise();
       break;
     case 3:
       playLondonBridge();
@@ -200,11 +216,11 @@ void playSong(int songNumber) {
 
 void playNeverGonnaGiveYouUp() {
     for (int thisNote = 0; thisNote < notesNGYU * 2; thisNote = thisNote + 2) {
-    dividerNGYU = melodyNGYU[thisNote + 1];
-    if (dividerNGYU > 0) {
-      noteDuration = (wholeNoteNGYU) / dividerNGYU;
-    } else if (dividerNGYU < 0) {
-      noteDuration = (wholeNoteNGYU) / abs(dividerNGYU);
+    divider = melodyNGYU[thisNote + 1];
+    if (divider > 0) {
+      noteDuration = (wholeNoteNGYU) / divider;
+    } else if (divider < 0) {
+      noteDuration = (wholeNoteNGYU) / abs(divider);
       noteDuration *= 1.5; 
     }
     tone(BUZZER_PIN, melodyNGYU[thisNote], noteDuration * 0.9);
@@ -213,8 +229,19 @@ void playNeverGonnaGiveYouUp() {
   }
 }
 
-void playBaaBaaBlackSheep() {
-  // Implement code to play Baa Baa Black Sheep
+void playFurElise() {
+  for (int thisNote = 0; thisNote < notesFE * 2; thisNote = thisNote + 2) {
+    divider = melodyFurElise[thisNote + 1];
+    if (divider > 0) {
+      noteDuration = (wholeNoteFE) / divider;
+    } else if (divider < 0) {
+      noteDuration = (wholeNoteFE) / abs(divider);
+      noteDuration *= 1.5; 
+    }
+    tone(BUZZER_PIN, melodyFurElise[thisNote], noteDuration * 0.9);
+    delay(noteDuration);
+    noTone(BUZZER_PIN);
+  }
 }
 
 void playLondonBridge() {
