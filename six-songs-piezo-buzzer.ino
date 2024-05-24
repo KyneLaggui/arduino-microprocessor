@@ -104,10 +104,12 @@
 #define NOTE_DS8 4978
 #define REST      0
 
+
 int tempoNGYU = 114;
 int tempoFE = 80;
 int tempoSW = 120;
 int tempoHBD = 140;
+int tempoM = 200;
 
 
 int melodyNGYU[] = {
@@ -172,21 +174,43 @@ int melodyHappyBirthday[] {
     NOTE_F4,-2,
 };
 
+int melodyMario[] {
+     NOTE_E5,8, NOTE_E5,8, REST,8, NOTE_E5,8, REST,8, NOTE_C5,8, NOTE_E5,8, //1
+    NOTE_G5,4, REST,4, NOTE_G4,8, REST,4, 
+    NOTE_C5,-4, NOTE_G4,8, REST,4, NOTE_E4,-4, // 3
+    NOTE_A4,4, NOTE_B4,4, NOTE_AS4,8, NOTE_A4,4,
+    NOTE_G4,-8, NOTE_E5,-8, NOTE_G5,-8, NOTE_A5,4, NOTE_F5,8, NOTE_G5,8,
+    REST,8, NOTE_E5,4,NOTE_C5,8, NOTE_D5,8, NOTE_B4,-4,
+    NOTE_C5,-4, NOTE_G4,8, REST,4, NOTE_E4,-4, // repeats from 3
+    NOTE_A4,4, NOTE_B4,4, NOTE_AS4,8, NOTE_A4,4,
+    NOTE_G4,-8, NOTE_E5,-8, NOTE_G5,-8, NOTE_A5,4, NOTE_F5,8, NOTE_G5,8,
+    REST,8, NOTE_E5,4,NOTE_C5,8, NOTE_D5,8, NOTE_B4,-4,
+
+    
+    REST,4, NOTE_G5,8, NOTE_FS5,8, NOTE_F5,8, NOTE_DS5,4, NOTE_E5,8,//7
+    REST,8, NOTE_GS4,8, NOTE_A4,8, NOTE_C4,8, REST,8, NOTE_A4,8, NOTE_C5,8, NOTE_D5,8,
+    REST,4, NOTE_DS5,4, REST,8, NOTE_D5,-4,
+    NOTE_C5,2, REST,2,
+
+    REST,4, NOTE_G5,8, NOTE_FS5,8, NOTE_F5,8, NOTE_DS5,4, NOTE_E5,8,//repeats from 7
+    REST,8, NOTE_GS4,8, NOTE_A4,8, NOTE_C4,8, REST,8, NOTE_A4,8, NOTE_C5,8, NOTE_D5,8,
+    REST,4, NOTE_DS5,4, REST,8, NOTE_D5,-4,
+    NOTE_C5,2, REST,2,
+};
+
 int notesNGYU = sizeof(melodyNGYU) / sizeof(melodyNGYU[0]) / 2;
 int notesFE = sizeof(melodyFurElise) / sizeof(melodyFurElise[0]) / 2;
 int notesSW = sizeof(melodyStarWars) / sizeof(melodyStarWars[0]) / 2;
 int notesHBD = sizeof(melodyHappyBirthday) / sizeof(melodyHappyBirthday[0]) / 2;
+int notesM = sizeof(melodyMario) / sizeof(melodyMario[0]) / 2;
 
 int wholeNoteNGYU = (60000 * 4) / tempoNGYU;
 int wholeNoteFE = (60000 * 4) / tempoFE;
 int wholeNoteSW = (60000 * 4) / tempoSW;
 int wholeNoteHBD = (60000 * 4) / tempoHBD;
+int wholeNoteM = (60000 * 4) / tempoM;
 
 int divider = 0, noteDuration = 0;
-
-
-
-
 
 
 void setup()
@@ -200,13 +224,13 @@ void setup()
   pinMode(BUZZER_PIN, OUTPUT);
   
   Serial.begin(9600);
-  Serial.print("<<<< ARDUINO JUKE BOX >>>>");
-  Serial.print("1. Happy Birthday");
-  Serial.print("2. Fur Elise");
-  Serial.print("3. Imperial Death March");
-  Serial.print("4. Five Little Ducks");
-  Serial.print("5. If you’re Happy and You Know it");
-  Serial.print("6. Surprise, Click Me!");
+  Serial.println("<<<< ARDUINO JUKE BOX >>>>");
+  Serial.println("1. Happy Birthday");
+  Serial.println("2. Fur Elise");
+  Serial.println("3. Imperial Death March");
+  Serial.println("4. Super Mario Bros");
+  Serial.println("5. If you’re Happy and You Know it");
+  Serial.println("6. Surprise, Click Me!");
 }
 
 void loop()
@@ -242,7 +266,7 @@ void playSong(int songNumber) {
       playStarWars();
       break;
     case 4:
-      playFiveLittleDucks();
+      playMario();
       break;
     case 5:
       playIfYoureHappy();
@@ -300,8 +324,19 @@ void playStarWars() {
   }
 }
 
-void playFiveLittleDucks() {
-  // Implement code to play Five Little Ducks
+void playMario() {
+  for (int thisNote = 0; thisNote < notesM * 2; thisNote = thisNote + 2) {
+    divider = melodyMario[thisNote + 1];
+    if (divider > 0) {
+      noteDuration = (wholeNoteM) / divider;
+    } else if (divider < 0) {
+      noteDuration = (wholeNoteM) / abs(divider);
+      noteDuration *= 1.5;
+    }
+    tone(BUZZER_PIN, melodyMario[thisNote], noteDuration*0.9);
+    delay(noteDuration);
+    noTone(BUZZER_PIN);
+  }
 }
 
 void playIfYoureHappy() {
