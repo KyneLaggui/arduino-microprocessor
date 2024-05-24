@@ -107,7 +107,7 @@
 
 int tempoNGYU = 114;
 int tempoFE = 80;
-int tempoSW = 120;
+int tempoAGM = 190;
 int tempoHBD = 140;
 int tempoM = 200;
 int tempoC = 224;
@@ -140,18 +140,24 @@ int melodyFurElise[] = {
     NOTE_A4 , 4, REST, 8,
 };
 
-int melodyStarWars[] {
-    NOTE_A4,4, NOTE_A4,4, NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16,
-
-    NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,//4
-    NOTE_E5,4, NOTE_E5,4, NOTE_E5,4, NOTE_F5,-8, NOTE_C5,16,
-    NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
-
-    NOTE_A5,4, NOTE_A4,-8, NOTE_A4,16, NOTE_A5,4, NOTE_GS5,-8, NOTE_G5,16, //7 
-    NOTE_DS5,16, NOTE_D5,16, NOTE_DS5,8, REST,8, NOTE_A4,8, NOTE_DS5,4, NOTE_D5,-8, NOTE_CS5,16,
-
-    NOTE_C5,16, NOTE_B4,16, NOTE_C5,16, REST,8, NOTE_F4,8, NOTE_GS4,4, NOTE_F4,-8, NOTE_A4,-16,//9
-    NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
+int melodyAngGandaMo[] {
+	NOTE_F5,4, NOTE_GS5,4, NOTE_AS5,4, NOTE_B5,4,
+    NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4,
+  	NOTE_CS6,4, NOTE_B5,4,NOTE_AS5,4, NOTE_GS5,4,
+  	NOTE_GS5,4, REST, 2,
+    NOTE_B5,4, NOTE_AS5,4, NOTE_GS5,4, NOTE_FS5,4, NOTE_AS5,4,
+    NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4,
+    NOTE_GS5,4, NOTE_FS5,4, NOTE_F5,4, NOTE_FS5,4, REST, 1,
+  	NOTE_F5,4, NOTE_GS5,4, NOTE_AS5,4, NOTE_B5,4,
+    NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4,
+  	NOTE_CS6,4, NOTE_B5,4,NOTE_AS5,4, NOTE_GS5,4,
+  	NOTE_GS5,4, REST, 2,
+    NOTE_B5,4, NOTE_AS5,4, NOTE_GS5,4, NOTE_FS5,4, NOTE_AS5,4,
+    NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4,
+    NOTE_GS5,4, NOTE_FS5,4, NOTE_F5,4, NOTE_FS5,4,
+   
+    
+   
 };
 
 int melodyHappyBirthday[] {
@@ -214,7 +220,7 @@ int melodyCoffin[] = {
 
 int notesNGYU = sizeof(melodyNGYU) / sizeof(melodyNGYU[0]) / 2;
 int notesFE = sizeof(melodyFurElise) / sizeof(melodyFurElise[0]) / 2;
-int notesSW = sizeof(melodyStarWars) / sizeof(melodyStarWars[0]) / 2;
+int notesAGM = sizeof(melodyAngGandaMo) / sizeof(melodyAngGandaMo[0]) / 2;
 int notesHBD = sizeof(melodyHappyBirthday) / sizeof(melodyHappyBirthday[0]) / 2;
 int notesM = sizeof(melodyMario) / sizeof(melodyMario[0]) / 2;
 int notesC = sizeof(melodyCoffin) / sizeof(melodyCoffin[0]) / 2;
@@ -222,7 +228,7 @@ int notesC = sizeof(melodyCoffin) / sizeof(melodyCoffin[0]) / 2;
 
 int wholeNoteNGYU = (60000 * 4) / tempoNGYU;
 int wholeNoteFE = (60000 * 4) / tempoFE;
-int wholeNoteSW = (60000 * 4) / tempoSW;
+int wholeNoteAGM = (60000 * 4) / tempoAGM;
 int wholeNoteHBD = (60000 * 4) / tempoHBD;
 int wholeNoteM = (60000 * 4) / tempoM;
 int wholeNoteC = (60000 * 4) / tempoC;
@@ -244,7 +250,7 @@ void setup()
   Serial.println("<<<< ARDUINO JUKE BOX >>>>");
   Serial.println("1. Happy Birthday");
   Serial.println("2. Fur Elise");
-  Serial.println("3. Imperial Death March");
+  Serial.println("3. Ang Ganda Mo");
   Serial.println("4. Super Mario Bros");
   Serial.println("5. Coffin Dance");
   Serial.println("6. Surprise, Click Me!");
@@ -280,7 +286,7 @@ void playSong(int songNumber) {
       playFurElise();
       break;
     case 3:
-      playStarWars();
+      playAngGandaMo();
       break;
     case 4:
       playMario();
@@ -326,16 +332,16 @@ void playFurElise() {
   }
 }
 
-void playStarWars() {
-  for (int thisNote = 0; thisNote < notesSW * 2; thisNote = thisNote + 2) {
-    divider = melodyStarWars[thisNote + 1];
+void playAngGandaMo() {
+  for (int thisNote = 0; thisNote < notesAGM * 2; thisNote = thisNote + 2) {
+    divider = melodyAngGandaMo[thisNote + 1];
     if (divider > 0) {
-      noteDuration = (wholeNoteSW) / divider;
+      noteDuration = (wholeNoteAGM) / divider;
     } else if (divider < 0) {
-      noteDuration = (wholeNoteSW) / abs(divider);
+      noteDuration = (wholeNoteAGM) / abs(divider);
       noteDuration *= 1.5;
     }
-    tone(BUZZER_PIN, melodyStarWars[thisNote], noteDuration*0.9);
+    tone(BUZZER_PIN, melodyAngGandaMo[thisNote], noteDuration*0.9);
     delay(noteDuration);
     noTone(BUZZER_PIN);
   }
