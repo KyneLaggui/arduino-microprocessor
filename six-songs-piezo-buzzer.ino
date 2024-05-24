@@ -170,7 +170,7 @@ int melodyHappyBirthday[] {
     NOTE_E4,-4, NOTE_D4,-4, NOTE_AS4,4, NOTE_AS4,8,
     NOTE_A4,-4, NOTE_F4,-4, NOTE_G4,-4,
     NOTE_F4,-2,
-}
+};
 
 int notesNGYU = sizeof(melodyNGYU) / sizeof(melodyNGYU[0]) / 2;
 int notesFE = sizeof(melodyFurElise) / sizeof(melodyFurElise[0]) / 2;
@@ -309,5 +309,16 @@ void playIfYoureHappy() {
 }
 
 void playHappyBirthday() {
-  // Implement code to play Rain Rain Go Away
+  for (int thisNote = 0; thisNote < notesHBD * 2; thisNote = thisNote + 2) {
+    divider = melodyHappyBirthday[thisNote + 1];
+    if (divider > 0) {
+      noteDuration = (wholeNoteHBD) / divider;
+    } else if (divider < 0) {
+      noteDuration = (wholeNoteHBD) / abs(divider);
+      noteDuration *= 1.5;
+    }
+    tone(BUZZER_PIN, melodyHappyBirthday[thisNote], noteDuration*0.9);
+    delay(noteDuration);
+    noTone(BUZZER_PIN);
+  }
 }
