@@ -107,8 +107,8 @@
 
 int tempoNGYU = 114;
 int tempoFE = 80;
-int tempoAGM = 190;
-int tempoHBD = 140;
+int tempoAGM = 210;
+int tempoSE = 115;
 int tempoM = 200;
 int tempoC = 224;
 
@@ -148,29 +148,24 @@ int melodyAngGandaMo[] {
     NOTE_B5,4, NOTE_AS5,4, NOTE_GS5,4, NOTE_FS5,4, NOTE_AS5,4,
     NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4,
     NOTE_GS5,4, NOTE_FS5,4, NOTE_F5,4, NOTE_FS5,4, REST, 1,
-  	NOTE_F5,4, NOTE_GS5,4, NOTE_AS5,4, NOTE_B5,4,
-    NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4,
-  	NOTE_CS6,4, NOTE_B5,4,NOTE_AS5,4, NOTE_GS5,4,
-  	NOTE_GS5,4, REST, 2,
-    NOTE_B5,4, NOTE_AS5,4, NOTE_GS5,4, NOTE_FS5,4, NOTE_AS5,4,
-    NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4,
-    NOTE_GS5,4, NOTE_FS5,4, NOTE_F5,4, NOTE_FS5,4,
+  	// NOTE_F5,4, NOTE_GS5,4, NOTE_AS5,4, NOTE_B5,4,
+    // NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4, NOTE_CS6,4,
+  	// NOTE_CS6,4, NOTE_B5,4,NOTE_AS5,4, NOTE_GS5,4,
+  	// NOTE_GS5,4, REST, 2,
+    // NOTE_B5,4, NOTE_AS5,4, NOTE_GS5,4, NOTE_FS5,4, NOTE_AS5,4,
+    // NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4, NOTE_AS5,4,
+    // NOTE_GS5,4, NOTE_FS5,4, NOTE_F5,4, NOTE_FS5,4,
    
     
    
 };
 
-int melodyHappyBirthday[] {
-    NOTE_C4,4, NOTE_C4,8, 
-    NOTE_D4,-4, NOTE_C4,-4, NOTE_F4,-4,
-    NOTE_E4,-2, NOTE_C4,4, NOTE_C4,8, 
-    NOTE_D4,-4, NOTE_C4,-4, NOTE_G4,-4,
-    NOTE_F4,-2, NOTE_C4,4, NOTE_C4,8,
-
-    NOTE_C5,-4, NOTE_A4,-4, NOTE_F4,-4, 
-    NOTE_E4,-4, NOTE_D4,-4, NOTE_AS4,4, NOTE_AS4,8,
-    NOTE_A4,-4, NOTE_F4,-4, NOTE_G4,-4,
-    NOTE_F4,-2,
+int melodySelos[] {
+    NOTE_A5, 4, NOTE_B5, 4, NOTE_A5, 5, NOTE_G5, 4,
+    NOTE_G5, 4, NOTE_A5, 4, NOTE_G5, 5, NOTE_FS5, 4, NOTE_FS5, 4, NOTE_G5, 4, NOTE_G5, 4, NOTE_E5, 8, NOTE_E5, 8,
+    NOTE_E5, 8, NOTE_FS5, 8, NOTE_E5, 8, NOTE_FS5, 8, NOTE_E5, 8, NOTE_D5, 4, REST, 4, NOTE_D5, 8, NOTE_E5, 8, NOTE_D5, 8, NOTE_E5, 8, NOTE_D5, 8, NOTE_E5, 8,
+    NOTE_C6, 4, NOTE_B5, 8, NOTE_C6, 8, NOTE_B5, 8, NOTE_A5, 8, NOTE_G5, 8,
+    NOTE_B5, 4, NOTE_A5, 2, NOTE_A5, 4, NOTE_D6, 1,
 };
 
 int melodyMario[] {
@@ -221,7 +216,7 @@ int melodyCoffin[] = {
 int notesNGYU = sizeof(melodyNGYU) / sizeof(melodyNGYU[0]) / 2;
 int notesFE = sizeof(melodyFurElise) / sizeof(melodyFurElise[0]) / 2;
 int notesAGM = sizeof(melodyAngGandaMo) / sizeof(melodyAngGandaMo[0]) / 2;
-int notesHBD = sizeof(melodyHappyBirthday) / sizeof(melodyHappyBirthday[0]) / 2;
+int notesSE = sizeof(melodySelos) / sizeof(melodySelos[0]) / 2;
 int notesM = sizeof(melodyMario) / sizeof(melodyMario[0]) / 2;
 int notesC = sizeof(melodyCoffin) / sizeof(melodyCoffin[0]) / 2;
 
@@ -229,7 +224,7 @@ int notesC = sizeof(melodyCoffin) / sizeof(melodyCoffin[0]) / 2;
 int wholeNoteNGYU = (60000 * 4) / tempoNGYU;
 int wholeNoteFE = (60000 * 4) / tempoFE;
 int wholeNoteAGM = (60000 * 4) / tempoAGM;
-int wholeNoteHBD = (60000 * 4) / tempoHBD;
+int wholeNoteSE = (60000 * 4) / tempoSE;
 int wholeNoteM = (60000 * 4) / tempoM;
 int wholeNoteC = (60000 * 4) / tempoC;
 
@@ -248,7 +243,7 @@ void setup()
   
   Serial.begin(9600);
   Serial.println("<<<< ARDUINO JUKE BOX >>>>");
-  Serial.println("1. Happy Birthday");
+  Serial.println("1. Selos");
   Serial.println("2. Fur Elise");
   Serial.println("3. Ang Ganda Mo");
   Serial.println("4. Super Mario Bros");
@@ -280,7 +275,7 @@ void playSong(int songNumber) {
 
   switch (songNumber) {
     case 1:
-      playHappyBirthday();
+      playSelos();
       break;
     case 2:
       playFurElise();
@@ -377,16 +372,16 @@ void playCoffin() {
   }
 }
 
-void playHappyBirthday() {
-  for (int thisNote = 0; thisNote < notesHBD * 2; thisNote = thisNote + 2) {
-    divider = melodyHappyBirthday[thisNote + 1];
+void playSelos() {
+  for (int thisNote = 0; thisNote < notesSE * 2; thisNote = thisNote + 2) {
+    divider = melodySelos[thisNote + 1];
     if (divider > 0) {
-      noteDuration = (wholeNoteHBD) / divider;
+      noteDuration = (wholeNoteSE) / divider;
     } else if (divider < 0) {
-      noteDuration = (wholeNoteHBD) / abs(divider);
+      noteDuration = (wholeNoteSE) / abs(divider);
       noteDuration *= 1.5;
     }
-    tone(BUZZER_PIN, melodyHappyBirthday[thisNote], noteDuration*0.9);
+    tone(BUZZER_PIN, melodySelos[thisNote], noteDuration*0.9);
     delay(noteDuration);
     noTone(BUZZER_PIN);
   }
